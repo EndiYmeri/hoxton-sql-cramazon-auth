@@ -1,0 +1,12 @@
+.items {
+  display: -ms-grid;
+  display: grid;
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+  -ms-grid-columns: (minmax(300px, auto))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(300px, auto));
+  justify-items: center;
+  gap: 20px;
+}
+/*# sourceMappingURL=items.css.map */

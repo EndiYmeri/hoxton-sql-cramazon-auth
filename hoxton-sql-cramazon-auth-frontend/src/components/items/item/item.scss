@@ -1,0 +1,41 @@
+.items {
+    .item {
+        list-style-type: none;
+        width: 300px;
+        display: grid;
+        justify-items: center;
+        cursor: pointer;
+        .image {
+            width: 200px;
+            overflow: hidden;
+            img {
+                width: 100%;
+            }
+        }
+        .title-price {
+            display: grid;
+            grid-auto-flow: column;
+            justify-items: center;
+            align-items: center;
+            width: 100%;
+            p {
+                font-weight: bold;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+            span {
+                background-color: #222;
+                padding: 2px 5px;
+                border-radius: 4px;
+                color: white;
+            }
+        }
+    }
+}
+
+.single-item {
+    .item {
+        display: grid;
+    }
+}

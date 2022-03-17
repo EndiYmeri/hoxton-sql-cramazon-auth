@@ -1,0 +1,33 @@
+header {
+  display: -ms-grid;
+  display: grid;
+  padding: 1rem 2rem;
+  -ms-grid-columns: auto 1fr auto;
+      grid-template-columns: auto 1fr auto;
+}
+
+header .searchBar form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+header .searchBar form input {
+  max-width: 500px;
+  width: 80%;
+  border: none;
+  -webkit-box-shadow: 0px 0px 0.5px 0.5px #222;
+          box-shadow: 0px 0px 0.5px 0.5px #222;
+  outline: none;
+  padding: .3rem;
+}
+
+header .searchBar form button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+/*# sourceMappingURL=header.css.map */
