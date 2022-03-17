@@ -12,11 +12,6 @@ export default function LoginPage({ currentUser, setCurrentUser}:Prop){
 
     const navigate = useNavigate() 
     const [credentials, setCreadetianls] = useState(true)
-    // useEffect(()=>{
-    //     if(currentUser){
-    //         navigate(-1)
-    //     }
-    // })
 
 
     function login(email:string, password:string){
@@ -29,12 +24,14 @@ export default function LoginPage({ currentUser, setCurrentUser}:Prop){
                 email, password
             })
         }).then(resp=> resp.json())
-        .then(user => {
-            if(user.message){
+        .then(data => {
+            if(data.message){
                 setCreadetianls(false)
             }else{
                 setCreadetianls(false)
-                setCurrentUser(user)
+                console.log(data)
+                setCurrentUser(data.user)
+                localStorage.setItem("token", data.token)
                 navigate(-1)
             }
         })

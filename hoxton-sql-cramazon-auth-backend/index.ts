@@ -1,7 +1,8 @@
-import { Order, Prisma, PrismaClient } from "@prisma/client";
-import e from "cors";
+import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import express from "express";
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 const prisma  = new PrismaClient({log:["query", "error", "warn", "info"]})
 
@@ -24,6 +25,8 @@ app.use(express.json())
 
 const PORT = 4000
 
+
+// function validate(token)
 
 app.get('/items',async (req, res) => {
   const items = await prisma.item.findMany()
@@ -188,23 +191,22 @@ app.delete('/users/:name'   ,async (req, res) => {
 app.post('/login',async (req,res) => {
     const {email, password} = req.body
     try{
-      if(email && password){
-        const user = await prisma.user.findFirst({
-          where:{
-              email,
-              password
-          },
-          include:{
-            orders:{
-              include: {item:true}
-            }
+      const user = await prisma.user.findUnique(
+        {
+          where:{email},
+          include:{orders:true}
+        }
+        )
+       if(user){
+         const passwordMatch = bcrypt.compareSync(password, user.password )
+         if(passwordMatch){
+           res.send(user)  
+          } else{
+            res.status(404).send({message: "Password doesnt match"})
           }
-        })
-        if(user){ res.send(user) } 
-          else{ res.send({message:"User doesnt exist"}) }
-      } else{
-        res.status(404).send({message: "Email or password undefined"})
-      }
+      }else{
+        res.status(404).send({message: "User doesnt match"})
+      } 
     }catch(err){
       // @ts-ignore
       res.send(err.message)
@@ -214,14 +216,17 @@ app.post('/login',async (req,res) => {
 // Register user
 app.post('/register',async (req,res) => {
   const { name, email, password} = req.body 
-
   try{
+    const hash = bcrypt.hashSync(password, 8)
     if(name && email && password){
       const createdUser = await prisma.user.create({
         data:{
-          name, email, password
+          name, email, password:hash
         },
       })
+
+      const token = jwt.sign(createdUser,"shhhh")
+      res.send({createdUser, token})
     } else{
       res.status(404).send({message:"Name, Email or password is missing"}) 
     }
