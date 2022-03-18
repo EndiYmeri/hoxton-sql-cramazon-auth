@@ -188,7 +188,7 @@ app.delete('/users/:name'   ,async (req, res) => {
 
 
 // Login user
-app.post('/login',async (req,res) => {
+app.post('/login', async (req,res) => {
     const {email, password} = req.body
     try{
       const user = await prisma.user.findUnique(
@@ -225,14 +225,19 @@ app.post('/register',async (req,res) => {
         },
       })
 
-      const token = jwt.sign(createdUser,"shhhh")
-      res.send({createdUser, token})
+      if(createdUser){
+        const token = jwt.sign(createdUser,"shhhh")
+        res.send({createdUser, token})
+      }else{
+        throw Error
+      }
+
     } else{
       res.status(404).send({message:"Name, Email or password is missing"}) 
     }
   } catch (err){
     // @ts-ignore
-    res.status(400).send(err.message)
+    res.status(400).send({error: err.message})
   }   
 })
 

@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import HomePage from './Pages/HomePage'
 import LoginPage from './Pages/LoginPage'
+import RegisterPage from './Pages/RegisterPage'
 
 export type ItemType = {
   id: number,
@@ -42,6 +43,7 @@ function App() {
             :<LoginPage currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             
             } />
+          <Route path='/register' element={<RegisterPage setCurrentUser={setCurrentUser} />} />
       </Routes>
     </div>
   )

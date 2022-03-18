@@ -1,69 +1,45 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { UserType } from "../App"
+import Form from "../components/loginRegisterForms/Form"
 
 type Prop = {
     currentUser?: UserType
     setCurrentUser: Function
 }
 
+type LoginData ={
+    email: string
+    password: string
+}
+
 export default function LoginPage({ currentUser, setCurrentUser}:Prop){
     
 
     const navigate = useNavigate() 
-    const [credentials, setCreadetianls] = useState(true)
+    const [credentials, setCreadetianls] = useState("")
 
 
-    function login(email:string, password:string){
+    function login(loginData : LoginData){
         fetch('http://localhost:4000/login',{
             method: "POST",
             headers:{
                 "content-type": "application/json",
             },
-            body: JSON.stringify({
-                email, password
-            })
-        }).then(resp=> resp.json())
+            body: JSON.stringify(loginData)
+        })
+        .then(resp=> resp.json())
         .then(data => {
             if(data.message){
-                setCreadetianls(false)
+                setCreadetianls(data.message)
             }else{
-                setCreadetianls(false)
-                console.log(data)
-                setCurrentUser(data.user)
-                localStorage.setItem("token", data.token)
+                setCurrentUser(data)
+                // localStorage.setItem("token", data.token)
                 navigate(-1)
             }
         })
     }
-    return (
-        <div className="login-page">
-            Log in
-            <form 
-                onSubmit={(e)=>{
-                    e.preventDefault()
-                    // @ts-ignore
-                    const email = e.target.email.value
-                    // @ts-ignore
-                    const password = e.target.password.value
-                    login(email, password)
-
-            }} >
-                <label htmlFor="email">
-                    <input type="text" name="email" id="email" />
-                </label>
-                <label htmlFor="password">
-                    <input type="password" name="password" id="password" />
-                </label>
-                <button type="submit">Log in</button>
-            </form>
-            {
-                credentials? null
-                : <span>Wrong user name or password</span>
-            } 
-
-        </div>
-    )
+    return <Form formSubmit={login} formTitle={"login"} wrongCredentials={credentials} />
 }
 
 

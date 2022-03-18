@@ -36,9 +36,9 @@ export default function Header({currentUser, setCurrentUser}:Prop){
                 {
                     currentUser
                     ? <AccButton buttonClass={"logout"} buttonName={"Log Out"} logOut={logOut} />
-                    : <div className="two-buttons">
-                        <AccButton buttonClass={"log-in"} buttonName={"Log In"} navigateLoc={'login'} />
-                        <AccButton buttonClass={"sign-up"} buttonName={"SignUp"} navigateLoc={'signup'} />
+                    :   <div className="two-buttons">
+                            <AccButton buttonClass={"log-in"} buttonName={"Log In"} navigateLoc={'login'} />
+                            <AccButton buttonClass={"register"} buttonName={"Register"} navigateLoc={'register'} /> 
                         </div>
                     
                       
